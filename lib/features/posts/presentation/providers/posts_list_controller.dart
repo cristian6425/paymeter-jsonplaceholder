@@ -5,6 +5,7 @@ import 'package:paymeterjsonplaceholder/core/domain/models/result.dart';
 import 'package:paymeterjsonplaceholder/features/posts/application/use_cases/fetch_posts_use_case.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/paginated_posts.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/pagination_params.dart';
+import 'package:paymeterjsonplaceholder/features/posts/domain/models/post_model.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/models/posts_list_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -84,5 +85,29 @@ class PostsListController extends _$PostsListController {
 
   void _setState(PostsListState newState) {
     state = AsyncValue.data(newState);
+  }
+
+  void insertPost(PostModel post) {
+    final snapshot = state.valueOrNull;
+    if (snapshot == null) {
+      _setState(
+        PostsListState(
+          items: [post],
+          nextStart: 0,
+          hasMore: true,
+          isLoading: false,
+          isPaginating: false,
+        ),
+      );
+      return;
+    }
+
+    final updatedItems = [post, ...snapshot.items];
+    _setState(
+      snapshot.copyWith(
+        items: updatedItems,
+        isLoading: false,
+      ),
+    );
   }
 }

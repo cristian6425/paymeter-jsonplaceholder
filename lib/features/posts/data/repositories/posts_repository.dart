@@ -5,6 +5,7 @@ import 'package:paymeterjsonplaceholder/core/domain/models/failure.dart';
 import 'package:paymeterjsonplaceholder/core/domain/models/result.dart';
 import 'package:paymeterjsonplaceholder/features/posts/data/data_sources/i_posts_data_source.dart';
 import 'package:paymeterjsonplaceholder/features/posts/data/data_sources/posts_api_data_source.dart';
+import 'package:paymeterjsonplaceholder/features/posts/domain/models/create_post_params.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/paginated_posts.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/pagination_params.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/post_model.dart';
@@ -68,6 +69,25 @@ class PostsRepository implements IPostsRepository {
     }
   }
 
+  @override
+  AsyncResult<PostModel> createPost(CreatePostParams params) async {
+    try {
+      final json = await _dataSource.createPost(params.toJson());
+      final post = _mapJsonToPostModel(json);
+      return Success(post);
+    } on DataError catch (error) {
+      return FailureResult(_mapDataErrorToFailure(error));
+    } catch (error, stackTrace) {
+      return FailureResult(
+        UnknownFailure(
+          message: 'No se pudo crear el post.',
+          cause: error,
+          stackTrace: stackTrace,
+        ),
+      );
+    }
+  }
+
   Failure _mapDataErrorToFailure(DataError error) {
     if (error is NetworkError) {
       return NetworkFailure(
@@ -82,6 +102,14 @@ class PostsRepository implements IPostsRepository {
 
     if (error is ApiError) {
       switch (error.statusCode) {
+        case 400:
+        case 422:
+          return ValidationFailure(
+            message: error.message,
+            code: error.errorCode,
+            cause: error,
+            fieldErrors: _extractFieldErrors(error),
+          );
         case 401:
           return UnauthorizedFailure(
             message: error.message,
@@ -122,4 +150,28 @@ PostModel _mapJsonToPostModel(Map<String, dynamic> json) {
     title: (json['title'] as String? ?? '').trim(),
     body: (json['body'] as String? ?? '').trim(),
   );
+}
+
+Map<String, List<String>> _extractFieldErrors(ApiError error) {
+  final details = error.details;
+  if (details == null) {
+    return {};
+  }
+
+  final Map<String, List<String>> normalized = {};
+  details.forEach((key, value) {
+    if (value is List) {
+      normalized[key] = value.map((e) => e.toString()).toList();
+    } else if (value is String) {
+      normalized[key] = [value];
+    } else if (value != null) {
+      normalized[key] = [value.toString()];
+    }
+  });
+
+  if (normalized.isEmpty) {
+    normalized['general'] = [error.message];
+  }
+
+  return normalized;
 }

@@ -31,7 +31,7 @@ class PostsListScreen extends ConsumerWidget {
             const SizedBox(height: 12),
             SecondaryButton(
               label: 'Recargar',
-              onPressed: notifier.refresh,
+              onPressed: () => notifier.refresh(),
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -56,7 +56,7 @@ class PostsListScreen extends ConsumerWidget {
                   );
                 },
                 error: (error, _) => _PostsListError(
-                  onRetry: notifier.refresh,
+                  onRetry: () => notifier.refresh(),
                   message: error.toString(),
                 ),
                 loading: () => const _PostsListLoading(),
