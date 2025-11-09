@@ -7,6 +7,5 @@ class Constants {
   static final GlobalKey<NavigatorState> navigatorKey =
       GlobalKey<NavigatorState>();
 
-  static String get apiHost => Environment().config.apiHost;
-
+  static String apiHost = Environment().config.apiHost;
 }

@@ -8,6 +8,4 @@ class DevConfig extends BaseConfig {
   @override
   String get apiHost => 'https://jsonplaceholder.typicode.com';
 
-  @override
-  String get postUrl => '$apiHost/posts';
 }
