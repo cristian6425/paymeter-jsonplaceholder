@@ -11,6 +11,21 @@ class PostDetailArgs {
 
   final int postId;
   final PostModel? cachedPost;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) {
+      return true;
+    }
+
+    return other.runtimeType == runtimeType &&
+        other is PostDetailArgs &&
+        other.postId == postId &&
+        other.cachedPost == cachedPost;
+  }
+
+  @override
+  int get hashCode => Object.hash(postId, cachedPost);
 }
 
 @freezed
