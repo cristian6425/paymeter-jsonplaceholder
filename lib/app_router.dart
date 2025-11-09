@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:paymeterjsonplaceholder/features/posts/domain/models/post_model.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/screens/post_detail_screen.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/screens/post_form_screen.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/screens/posts_list_screen.dart';
@@ -43,9 +44,16 @@ final goRouterProvider = Provider<GoRouter>((ref) {
           GoRoute(
             path: ':id',
             name: Routes.postDetail.routeName,
-            builder: (context, state) => PostDetailScreen(
-              postId: state.pathParameters['id'] ?? '',
-            ),
+            builder: (context, state) {
+              final rawId = state.pathParameters['id'];
+              final postId = rawId != null ? int.tryParse(rawId) ?? 0 : 0;
+              final cachedPost =
+                  state.extra is PostModel ? state.extra as PostModel : null;
+              return PostDetailScreen(
+                postId: postId,
+                cachedPost: cachedPost,
+              );
+            },
             routes: [
               GoRoute(
                 path: 'edit',
