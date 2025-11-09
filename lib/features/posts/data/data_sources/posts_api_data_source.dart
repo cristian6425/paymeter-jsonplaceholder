@@ -50,6 +50,22 @@ class PostsApiDataSource implements IPostsDataSource {
     }
   }
 
+  @override
+  Future<Map<String, dynamic>> createPost(
+    Map<String, dynamic> payload,
+  ) async {
+    try {
+      final response = await _client.post<Map<String, dynamic>>(
+        resourcePath,
+        data: payload,
+      );
+      final data = response.data ?? payload;
+      return Map<String, dynamic>.from(data);
+    } on DioException catch (error) {
+      throw _mapDioException(error);
+    }
+  }
+
   DataError _mapDioException(DioException error) {
     final underlying = error.error;
     if (underlying is DataError) {

@@ -22,6 +22,7 @@ class PostList extends StatefulWidget {
 
 class _PostListState extends State<PostList> {
   late final ScrollController _controller;
+  bool _hasPendingPagination = false;
 
   @override
   void initState() {
@@ -35,6 +36,14 @@ class _PostListState extends State<PostList> {
       ..removeListener(_onScroll)
       ..dispose();
     super.dispose();
+  }
+
+  @override
+  void didUpdateWidget(covariant PostList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (!widget.isPaginating) {
+      _hasPendingPagination = false;
+    }
   }
 
   @override
@@ -70,12 +79,13 @@ class _PostListState extends State<PostList> {
     }
 
     final position = _controller.position;
-    final remaining = position.maxScrollExtent - position.pixels;
-    if (position.maxScrollExtent <= 0) {
+    if (position.maxScrollExtent <= 0 || _hasPendingPagination) {
       return;
     }
 
+    final remaining = position.maxScrollExtent - position.pixels;
     if (remaining <= 240 && !position.outOfRange) {
+      _hasPendingPagination = true;
       widget.onEndReached!.call();
     }
   }
