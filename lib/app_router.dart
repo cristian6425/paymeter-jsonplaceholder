@@ -58,10 +58,17 @@ final goRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'edit',
                 name: Routes.postEdit.routeName,
-                builder: (context, state) => PostFormScreen(
-                  mode: PostFormMode.edit,
-                  postId: state.pathParameters['id'] ?? '',
-                ),
+                builder: (context, state) {
+                  final rawId = state.pathParameters['id'];
+                  final postId = rawId != null ? int.tryParse(rawId) ?? 0 : 0;
+                  final post =
+                      state.extra is PostModel ? state.extra as PostModel : null;
+                  return PostFormScreen(
+                    mode: PostFormMode.edit,
+                    postId: postId,
+                    initialPost: post,
+                  );
+                },
               ),
             ],
           ),

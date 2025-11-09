@@ -20,12 +20,11 @@ class PostDetailArgs {
 
     return other.runtimeType == runtimeType &&
         other is PostDetailArgs &&
-        other.postId == postId &&
-        other.cachedPost == cachedPost;
+        other.postId == postId;
   }
 
   @override
-  int get hashCode => Object.hash(postId, cachedPost);
+  int get hashCode => postId.hashCode;
 }
 
 @freezed

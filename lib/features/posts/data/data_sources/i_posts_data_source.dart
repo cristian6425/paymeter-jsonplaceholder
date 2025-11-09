@@ -7,4 +7,14 @@ abstract class IPostsDataSource {
   Future<Map<String, dynamic>> fetchPost(int id);
 
   Future<Map<String, dynamic>> createPost(Map<String, dynamic> payload);
+
+  Future<Map<String, dynamic>> updatePost({
+    required int id,
+    required Map<String, dynamic> payload,
+  });
+
+  Future<Map<String, dynamic>> patchPost({
+    required int id,
+    required Map<String, dynamic> payload,
+  });
 }

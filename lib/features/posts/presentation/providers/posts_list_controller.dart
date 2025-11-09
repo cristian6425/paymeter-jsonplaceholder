@@ -87,7 +87,7 @@ class PostsListController extends _$PostsListController {
     state = AsyncValue.data(newState);
   }
 
-  void insertPost(PostModel post) {
+  void upsertPost(PostModel post) {
     final snapshot = state.valueOrNull;
     if (snapshot == null) {
       _setState(
@@ -102,12 +102,16 @@ class PostsListController extends _$PostsListController {
       return;
     }
 
-    final updatedItems = [post, ...snapshot.items];
-    _setState(
-      snapshot.copyWith(
-        items: updatedItems,
-        isLoading: false,
-      ),
-    );
+    final existingIndex =
+        snapshot.items.indexWhere((element) => element.id == post.id);
+
+    if (existingIndex == -1) {
+      final updatedItems = [post, ...snapshot.items];
+      _setState(snapshot.copyWith(items: updatedItems));
+    } else {
+      final updatedItems = [...snapshot.items];
+      updatedItems[existingIndex] = post;
+      _setState(snapshot.copyWith(items: updatedItems));
+    }
   }
 }

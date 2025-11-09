@@ -67,7 +67,7 @@ class CreatePostFormController extends _$CreatePostFormController {
 
     result.when(
       success: (post) {
-        ref.read(postsListControllerProvider.notifier).insertPost(post);
+        ref.read(postsListControllerProvider.notifier).upsertPost(post);
         _setState(
           snapshot.copyWith(
             title: '',

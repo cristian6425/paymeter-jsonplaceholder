@@ -9,6 +9,7 @@ import 'package:paymeterjsonplaceholder/features/posts/domain/models/create_post
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/paginated_posts.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/pagination_params.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/post_model.dart';
+import 'package:paymeterjsonplaceholder/features/posts/domain/models/update_post_params.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/repositories/i_posts_repository.dart';
 
 class PostsRepository implements IPostsRepository {
@@ -81,6 +82,50 @@ class PostsRepository implements IPostsRepository {
       return FailureResult(
         UnknownFailure(
           message: 'No se pudo crear el post.',
+          cause: error,
+          stackTrace: stackTrace,
+        ),
+      );
+    }
+  }
+
+  @override
+  AsyncResult<PostModel> updatePost(UpdatePostParams params) async {
+    try {
+      final json = await _dataSource.updatePost(
+        id: params.id,
+        payload: params.toJson(),
+      );
+      final post = _mapJsonToPostModel(json);
+      return Success(post);
+    } on DataError catch (error) {
+      return FailureResult(_mapDataErrorToFailure(error));
+    } catch (error, stackTrace) {
+      return FailureResult(
+        UnknownFailure(
+          message: 'No se pudo actualizar el post.',
+          cause: error,
+          stackTrace: stackTrace,
+        ),
+      );
+    }
+  }
+
+  @override
+  AsyncResult<PostModel> patchPost(PatchPostParams params) async {
+    try {
+      final json = await _dataSource.patchPost(
+        id: params.id,
+        payload: params.toJson(),
+      );
+      final post = _mapJsonToPostModel(json);
+      return Success(post);
+    } on DataError catch (error) {
+      return FailureResult(_mapDataErrorToFailure(error));
+    } catch (error, stackTrace) {
+      return FailureResult(
+        UnknownFailure(
+          message: 'No se pudo actualizar el post.',
           cause: error,
           stackTrace: stackTrace,
         ),
