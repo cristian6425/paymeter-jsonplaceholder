@@ -15,4 +15,6 @@ abstract class IPostsRepository {
   AsyncResult<PostModel> updatePost(UpdatePostParams params);
 
   AsyncResult<PostModel> patchPost(PatchPostParams params);
+
+  AsyncResult<void> deletePost(int id);
 }

@@ -100,6 +100,15 @@ class PostsApiDataSource implements IPostsDataSource {
     }
   }
 
+  @override
+  Future<void> deletePost(int id) async {
+    try {
+      await _client.delete<void>('$resourcePath/$id');
+    } on DioException catch (error) {
+      throw _mapDioException(error);
+    }
+  }
+
   DataError _mapDioException(DioException error) {
     final underlying = error.error;
     if (underlying is DataError) {

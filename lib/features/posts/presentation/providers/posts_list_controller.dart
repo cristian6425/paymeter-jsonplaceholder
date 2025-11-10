@@ -114,4 +114,15 @@ class PostsListController extends _$PostsListController {
       _setState(snapshot.copyWith(items: updatedItems));
     }
   }
+
+  void removePost(int id) {
+    final snapshot = state.valueOrNull;
+    if (snapshot == null) {
+      return;
+    }
+
+    final updatedItems =
+        snapshot.items.where((element) => element.id != id).toList();
+    _setState(snapshot.copyWith(items: updatedItems));
+  }
 }
