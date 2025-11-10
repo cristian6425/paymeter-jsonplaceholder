@@ -22,7 +22,7 @@ class HttpErrorTranslator {
     if (_isTimeout(exception.type)) {
       return NetworkError(
         message:
-            'La solicitud tardó demasiado tiempo. Verifica tu conexión e inténtalo de nuevo.',
+            'The request timed out. Check your connection and try again.',
         statusCode: statusCode,
         reason: 'timeout',
         type: exception.type,
@@ -32,14 +32,14 @@ class HttpErrorTranslator {
     switch (exception.type) {
       case DioExceptionType.badCertificate:
         return NetworkError(
-          message: 'No se pudo establecer una conexión segura.',
+          message: 'Unable to establish a secure connection.',
           statusCode: statusCode,
           reason: 'bad_certificate',
           type: exception.type,
         );
       case DioExceptionType.cancel:
         return NetworkError(
-          message: 'Operación cancelada por el usuario.',
+          message: 'Operation cancelled by the user.',
           statusCode: statusCode,
           reason: 'cancelled',
           type: exception.type,
@@ -47,7 +47,7 @@ class HttpErrorTranslator {
       default:
         return NetworkError(
           message:
-              'No fue posible comunicarse con el servicio. Inténtalo más tarde.',
+              'Unable to reach the service. Please try again later.',
           statusCode: statusCode,
           reason: exception.type.name,
           type: exception.type,
@@ -80,14 +80,14 @@ class HttpErrorTranslator {
 
   String? _messageFromStatus(int? statusCode) {
     return switch (statusCode) {
-      400 => 'Solicitud inválida. Revisa los datos enviados.',
-      401 => 'No autorizado. Inicia sesión nuevamente.',
-      403 => 'No tienes permisos para realizar esta acción.',
-      404 => 'Recurso no encontrado.',
-      409 => 'Conflicto con la información enviada.',
-      422 => 'Los datos enviados no cumplen con los requisitos.',
-      500 => 'Error interno del servidor.',
-      503 => 'Servicio no disponible temporalmente.',
+      400 => 'Invalid request. Please verify the submitted data.',
+      401 => 'Unauthorized. Please sign in again.',
+      403 => 'You do not have permission to perform this action.',
+      404 => 'Resource not found.',
+      409 => 'Conflict with the submitted information.',
+      422 => 'The data provided does not meet the requirements.',
+      500 => 'Internal server error.',
+      503 => 'Service temporarily unavailable.',
       _ => null,
     };
   }

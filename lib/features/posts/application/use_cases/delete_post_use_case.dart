@@ -22,7 +22,7 @@ class DeletePostUseCase extends UseCase<DeletePostInput, void> {
   AsyncResult<void> call(DeletePostInput params) async {
     if (params.id <= 0) {
       return FailureResult(
-        ValidationFailure(message: 'Identificador inválido.'),
+        ValidationFailure(message: 'Invalid identifier.'),
       );
     }
     return _repository.deletePost(params.id);

@@ -25,12 +25,12 @@ class PostsListScreen extends ConsumerWidget {
         child: Column(
           children: [
             PrimaryButton(
-              label: 'Crear nuevo post',
+              label: 'Create new post',
               onPressed: () => context.pushNamed(Routes.postCreate.routeName),
             ),
             const SizedBox(height: 12),
             SecondaryButton(
-              label: 'Recargar',
+              label: 'Refresh',
               onPressed: () {
                 notifier.refresh();
               },
@@ -114,7 +114,7 @@ class _PostsListEmpty extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           Text(
-            'Crea un nuevo post o recarga para intentar nuevamente.',
+            'Create a new post or refresh to try again.',
             style: theme.textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
@@ -147,7 +147,7 @@ class _PostsListError extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Ocurrió un error',
+            'Something went wrong',
             style: theme.textTheme.titleMedium,
           ),
           const SizedBox(height: 8),

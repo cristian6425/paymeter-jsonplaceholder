@@ -24,7 +24,7 @@ class PostDetailScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     if (postId <= 0) {
       return const Scaffold(
-        body: Center(child: Text('Identificador inválido.')),
+        body: Center(child: Text('Invalid identifier.')),
       );
     }
 
@@ -177,7 +177,7 @@ class _PostDetailContent extends StatelessWidget {
           TextButton.icon(
             onPressed: onRetry,
             icon: const Icon(Icons.sync),
-            label: const Text('Mostrando datos en caché, actualizar'),
+            label: const Text('Showing cached data, refresh'),
           ),
         Text(
           post.title,
@@ -204,7 +204,7 @@ class _PostDetailContent extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         SecondaryButton(
-          label: 'Eliminar post',
+          label: 'Delete post',
           onPressed: onDelete,
         ),
       ],
@@ -231,17 +231,17 @@ class _PostDetailEmpty extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'No encontramos este post',
+            'We could not find this post',
             style: theme.textTheme.titleMedium,
           ),
           const SizedBox(height: 4),
           Text(
-            'Puede que haya sido eliminado o no exista.',
+            'It may have been deleted or does not exist.',
             style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
           SecondaryButton(
-            label: 'Intentar nuevamente',
+            label: 'Try again',
             onPressed: onRetry,
             isExpanded: false,
           ),
@@ -274,7 +274,7 @@ class _PostDetailError extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           Text(
-            'Algo salió mal',
+            'Something went wrong',
             style: theme.textTheme.titleMedium,
           ),
           const SizedBox(height: 8),
@@ -288,7 +288,7 @@ class _PostDetailError extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           SecondaryButton(
-            label: 'Reintentar',
+            label: 'Retry',
             onPressed: onRetry,
             isExpanded: false,
           ),

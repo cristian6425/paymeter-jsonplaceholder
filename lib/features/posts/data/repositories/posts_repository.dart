@@ -44,7 +44,7 @@ class PostsRepository implements IPostsRepository {
     } catch (error, stackTrace) {
       return FailureResult(
         UnknownFailure(
-          message: 'No se pudo cargar la lista de posts.',
+          message: 'Unable to load the posts list.',
           cause: error,
           stackTrace: stackTrace,
         ),
@@ -62,7 +62,7 @@ class PostsRepository implements IPostsRepository {
     } catch (error, stackTrace) {
       return FailureResult(
         UnknownFailure(
-          message: 'No se pudo obtener el detalle del post.',
+          message: 'Unable to fetch the post details.',
           cause: error,
           stackTrace: stackTrace,
         ),
@@ -81,7 +81,7 @@ class PostsRepository implements IPostsRepository {
     } catch (error, stackTrace) {
       return FailureResult(
         UnknownFailure(
-          message: 'No se pudo crear el post.',
+          message: 'Unable to create the post.',
           cause: error,
           stackTrace: stackTrace,
         ),
@@ -103,7 +103,7 @@ class PostsRepository implements IPostsRepository {
     } catch (error, stackTrace) {
       return FailureResult(
         UnknownFailure(
-          message: 'No se pudo actualizar el post.',
+          message: 'Unable to update the post.',
           cause: error,
           stackTrace: stackTrace,
         ),
@@ -125,7 +125,7 @@ class PostsRepository implements IPostsRepository {
     } catch (error, stackTrace) {
       return FailureResult(
         UnknownFailure(
-          message: 'No se pudo actualizar el post.',
+          message: 'Unable to update the post.',
           cause: error,
           stackTrace: stackTrace,
         ),
@@ -137,7 +137,7 @@ class PostsRepository implements IPostsRepository {
   AsyncResult<void> deletePost(int id) async {
     if (id <= 0) {
       return FailureResult(
-        ValidationFailure(message: 'Identificador inválido.'),
+        ValidationFailure(message: 'Invalid identifier.'),
       );
     }
 
@@ -149,7 +149,7 @@ class PostsRepository implements IPostsRepository {
     } catch (error, stackTrace) {
       return FailureResult(
         UnknownFailure(
-          message: 'No se pudo eliminar el post.',
+          message: 'Unable to delete the post.',
           cause: error,
           stackTrace: stackTrace,
         ),
