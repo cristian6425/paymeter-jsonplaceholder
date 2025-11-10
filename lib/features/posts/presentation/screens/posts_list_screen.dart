@@ -160,7 +160,7 @@ class _PostsListError extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           SecondaryButton(
-            label: 'Intentar de nuevo',
+            label: 'Retry',
             onPressed: onRetry,
             isExpanded: false,
           ),

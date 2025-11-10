@@ -1,5 +1,3 @@
-
-
 import 'package:paymeterjsonplaceholder/config/base_config.dart';
 import 'package:paymeterjsonplaceholder/config/prod_config.dart';
 

@@ -1,6 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paymeterjsonplaceholder/core/application/use_cases/use_case.dart';
-import 'package:paymeterjsonplaceholder/core/domain/models/failure.dart';
 import 'package:paymeterjsonplaceholder/core/domain/models/result.dart';
 import 'package:paymeterjsonplaceholder/features/posts/data/repositories/posts_repository.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/create_post_params.dart';
