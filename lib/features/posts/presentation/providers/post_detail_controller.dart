@@ -18,19 +18,7 @@ class PostDetailController extends _$PostDetailController {
 
   @override
   FutureOr<PostDetailState> build(PostDetailArgs args) {
-    ref.keepAlive();
     _args = args;
-
-    if (args.cachedPost != null) {
-      final cachedState = PostDetailState(
-        post: args.cachedPost,
-        isFromCache: true,
-        isLoading: true,
-      );
-      Future.microtask(_fetchFresh);
-      return cachedState;
-    }
-
     Future.microtask(_fetchFresh);
     return PostDetailState.initial();
   }
@@ -41,7 +29,7 @@ class PostDetailController extends _$PostDetailController {
 
   Future<void> _fetchFresh() async {
     final snapshot = state.valueOrNull ?? PostDetailState.initial();
-    _setState(snapshot.copyWith(isLoading: true, isFromCache: false));
+    _setState(snapshot.copyWith(isLoading: true));
 
     final result = await _useCase(
       FetchPostDetailParams(_args.postId),
@@ -52,7 +40,6 @@ class PostDetailController extends _$PostDetailController {
         _setState(
           PostDetailState(
             post: post,
-            isFromCache: false,
             isLoading: false,
           ),
         );
@@ -71,7 +58,6 @@ class PostDetailController extends _$PostDetailController {
     _setState(
       PostDetailState(
         post: post,
-        isFromCache: false,
         isLoading: false,
       ),
     );
@@ -81,7 +67,6 @@ class PostDetailController extends _$PostDetailController {
     state = AsyncValue.data(
       PostDetailState(
         post: null,
-        isFromCache: false,
         isLoading: false,
       ),
     );

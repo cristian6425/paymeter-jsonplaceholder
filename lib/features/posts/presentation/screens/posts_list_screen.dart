@@ -76,7 +76,6 @@ class PostsListScreen extends ConsumerWidget {
     context.pushNamed(
       Routes.postDetail.routeName,
       pathParameters: {'id': post.id.toString()},
-      extra: post,
     );
   }
 }

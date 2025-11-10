@@ -140,7 +140,7 @@ class EditPostFormController extends _$EditPostFormController {
     ref
         .read(
           postDetailControllerProvider(
-            PostDetailArgs(postId: post.id, cachedPost: post),
+            PostDetailArgs(postId: post.id),
           ).notifier,
         )
         .applyExternalUpdate(post);
