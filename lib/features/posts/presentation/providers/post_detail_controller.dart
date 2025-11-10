@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paymeterjsonplaceholder/core/domain/models/result.dart';
 import 'package:paymeterjsonplaceholder/features/posts/application/use_cases/fetch_post_detail_use_case.dart';
+import 'package:paymeterjsonplaceholder/features/posts/domain/models/post_model.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/models/post_detail_state.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -64,5 +65,15 @@ class PostDetailController extends _$PostDetailController {
 
   void _setState(PostDetailState newState) {
     state = AsyncValue.data(newState);
+  }
+
+  void applyExternalUpdate(PostModel post) {
+    _setState(
+      PostDetailState(
+        post: post,
+        isFromCache: false,
+        isLoading: false,
+      ),
+    );
   }
 }

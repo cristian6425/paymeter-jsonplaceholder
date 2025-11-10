@@ -51,7 +51,7 @@ class PostDetailScreen extends ConsumerWidget {
             return _PostDetailContent(
               post: state.post!,
               isFromCache: state.isFromCache,
-              onEdit: () => _openEdit(context, state.post!.id),
+              onEdit: () => _openEdit(context, state.post!),
               onRetry: notifier.refresh,
               isLoading: state.isLoading,
             );
@@ -68,10 +68,11 @@ class PostDetailScreen extends ConsumerWidget {
     );
   }
 
-  void _openEdit(BuildContext context, int id) {
+  void _openEdit(BuildContext context, PostModel post) {
     context.pushNamed(
       Routes.postEdit.routeName,
-      pathParameters: {'id': id.toString()},
+      pathParameters: {'id': post.id.toString()},
+      extra: post,
     );
   }
 }
