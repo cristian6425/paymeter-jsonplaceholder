@@ -1,8 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paymeterjsonplaceholder/core/domain/models/failure.dart';
-import 'package:paymeterjsonplaceholder/core/domain/models/result.dart';
 import 'package:paymeterjsonplaceholder/features/posts/application/use_cases/create_post_use_case.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/models/create_post_form_state.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/posts_list_controller.dart';

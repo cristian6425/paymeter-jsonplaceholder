@@ -47,11 +47,8 @@ final goRouterProvider = Provider<GoRouter>((ref) {
             builder: (context, state) {
               final rawId = state.pathParameters['id'];
               final postId = rawId != null ? int.tryParse(rawId) ?? 0 : 0;
-              final cachedPost =
-                  state.extra is PostModel ? state.extra as PostModel : null;
               return PostDetailScreen(
                 postId: postId,
-                cachedPost: cachedPost,
               );
             },
             routes: [

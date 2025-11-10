@@ -76,7 +76,6 @@ class PostsListScreen extends ConsumerWidget {
     context.pushNamed(
       Routes.postDetail.routeName,
       pathParameters: {'id': post.id.toString()},
-      extra: post,
     );
   }
 }
@@ -161,7 +160,7 @@ class _PostsListError extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           SecondaryButton(
-            label: 'Intentar de nuevo',
+            label: 'Retry',
             onPressed: onRetry,
             isExpanded: false,
           ),

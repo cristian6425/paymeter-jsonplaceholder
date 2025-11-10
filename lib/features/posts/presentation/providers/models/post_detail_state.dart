@@ -6,11 +6,9 @@ part 'post_detail_state.freezed.dart';
 class PostDetailArgs {
   const PostDetailArgs({
     required this.postId,
-    this.cachedPost,
   }) : assert(postId > 0, 'postId must be positive');
 
   final int postId;
-  final PostModel? cachedPost;
 
   @override
   bool operator ==(Object other) {
@@ -31,7 +29,6 @@ class PostDetailArgs {
 class PostDetailState with _$PostDetailState {
   const factory PostDetailState({
     PostModel? post,
-    @Default(false) bool isFromCache,
     @Default(true) bool isLoading,
   }) = _PostDetailState;
 

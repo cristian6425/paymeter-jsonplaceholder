@@ -14,11 +14,9 @@ class PostDetailScreen extends ConsumerWidget {
   const PostDetailScreen({
     super.key,
     required this.postId,
-    this.cachedPost,
   });
 
   final int postId;
-  final PostModel? cachedPost;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -29,7 +27,7 @@ class PostDetailScreen extends ConsumerWidget {
     }
 
     final provider = postDetailControllerProvider(
-      PostDetailArgs(postId: postId, cachedPost: cachedPost),
+      PostDetailArgs(postId: postId),
     );
     final detailAsync = ref.watch(provider);
     final notifier = ref.read(provider.notifier);
@@ -52,9 +50,7 @@ class PostDetailScreen extends ConsumerWidget {
 
             return _PostDetailContent(
               post: state.post!,
-              isFromCache: state.isFromCache,
               onEdit: () => _openEdit(context, state.post!),
-              onRetry: notifier.refresh,
               onDelete: () => _confirmDeletion(
                 context,
                 ref,
@@ -115,7 +111,7 @@ class PostDetailScreen extends ConsumerWidget {
 
     final listNotifier = ref.read(postsListControllerProvider.notifier);
     final detailProvider = postDetailControllerProvider(
-      PostDetailArgs(postId: postId, cachedPost: cachedPost),
+      PostDetailArgs(postId: postId),
     );
     final detailNotifier = ref.read(detailProvider.notifier);
     final deleteUseCase = ref.read(deletePostUseCaseProvider);
@@ -137,7 +133,7 @@ class PostDetailScreen extends ConsumerWidget {
           action: SnackBarAction(
             label: 'Undo',
             onPressed: () {
-              // In a real implementation we would reinsert the cached post.
+              // In a real implementation we would reinsert the deleted post.
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Undo not implemented.')),
               );
@@ -153,17 +149,13 @@ class PostDetailScreen extends ConsumerWidget {
 class _PostDetailContent extends StatelessWidget {
   const _PostDetailContent({
     required this.post,
-    required this.isFromCache,
     required this.onEdit,
-    required this.onRetry,
     required this.onDelete,
     required this.isLoading,
   });
 
   final PostModel post;
-  final bool isFromCache;
   final VoidCallback onEdit;
-  final VoidCallback onRetry;
   final VoidCallback onDelete;
   final bool isLoading;
 
@@ -173,12 +165,6 @@ class _PostDetailContent extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        if (isFromCache)
-          TextButton.icon(
-            onPressed: onRetry,
-            icon: const Icon(Icons.sync),
-            label: const Text('Showing cached data, refresh'),
-          ),
         Text(
           post.title,
           style: theme.textTheme.headlineSmall,

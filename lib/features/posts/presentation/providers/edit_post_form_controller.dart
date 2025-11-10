@@ -1,11 +1,9 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paymeterjsonplaceholder/core/domain/models/failure.dart';
 import 'package:paymeterjsonplaceholder/features/posts/application/use_cases/patch_post_use_case.dart';
 import 'package:paymeterjsonplaceholder/features/posts/application/use_cases/update_post_use_case.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/post_model.dart';
-import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/create_post_form_controller.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/models/create_post_form_state.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/models/post_detail_state.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/post_detail_controller.dart';
@@ -140,7 +138,7 @@ class EditPostFormController extends _$EditPostFormController {
     ref
         .read(
           postDetailControllerProvider(
-            PostDetailArgs(postId: post.id, cachedPost: post),
+            PostDetailArgs(postId: post.id),
           ).notifier,
         )
         .applyExternalUpdate(post);

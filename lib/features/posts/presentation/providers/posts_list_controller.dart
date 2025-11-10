@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paymeterjsonplaceholder/core/domain/models/result.dart';
 import 'package:paymeterjsonplaceholder/features/posts/application/use_cases/fetch_posts_use_case.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/paginated_posts.dart';

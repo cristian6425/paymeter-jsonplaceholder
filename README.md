@@ -12,7 +12,7 @@ Clean-architecture Flutter app that integrates with the JsonPlaceholder API, sho
 
 1. **Clone the repository**
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/cristian6425/paymeter-jsonplaceholder.git
    cd paymeter-jsonplaceholder
    ```
 2. **Install Flutter dependencies**
