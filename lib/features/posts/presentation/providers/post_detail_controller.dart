@@ -76,4 +76,14 @@ class PostDetailController extends _$PostDetailController {
       ),
     );
   }
+
+  void removeCurrentPost() {
+    state = AsyncValue.data(
+      PostDetailState(
+        post: null,
+        isFromCache: false,
+        isLoading: false,
+      ),
+    );
+  }
 }

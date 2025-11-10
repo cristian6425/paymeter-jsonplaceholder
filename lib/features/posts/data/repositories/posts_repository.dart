@@ -133,6 +133,30 @@ class PostsRepository implements IPostsRepository {
     }
   }
 
+  @override
+  AsyncResult<void> deletePost(int id) async {
+    if (id <= 0) {
+      return FailureResult(
+        ValidationFailure(message: 'Identificador inválido.'),
+      );
+    }
+
+    try {
+      await _dataSource.deletePost(id);
+      return const Success(null);
+    } on DataError catch (error) {
+      return FailureResult(_mapDataErrorToFailure(error));
+    } catch (error, stackTrace) {
+      return FailureResult(
+        UnknownFailure(
+          message: 'No se pudo eliminar el post.',
+          cause: error,
+          stackTrace: stackTrace,
+        ),
+      );
+    }
+  }
+
   Failure _mapDataErrorToFailure(DataError error) {
     if (error is NetworkError) {
       return NetworkFailure(

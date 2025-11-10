@@ -4,9 +4,11 @@ import 'package:go_router/go_router.dart';
 import 'package:paymeterjsonplaceholder/app_router.dart';
 import 'package:paymeterjsonplaceholder/core/presentation/widgets/primary_button.dart';
 import 'package:paymeterjsonplaceholder/core/presentation/widgets/secondary_button.dart';
+import 'package:paymeterjsonplaceholder/features/posts/application/use_cases/delete_post_use_case.dart';
 import 'package:paymeterjsonplaceholder/features/posts/domain/models/post_model.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/models/post_detail_state.dart';
 import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/post_detail_controller.dart';
+import 'package:paymeterjsonplaceholder/features/posts/presentation/providers/posts_list_controller.dart';
 
 class PostDetailScreen extends ConsumerWidget {
   const PostDetailScreen({
@@ -53,6 +55,11 @@ class PostDetailScreen extends ConsumerWidget {
               isFromCache: state.isFromCache,
               onEdit: () => _openEdit(context, state.post!),
               onRetry: notifier.refresh,
+              onDelete: () => _confirmDeletion(
+                context,
+                ref,
+                postId: state.post!.id,
+              ),
               isLoading: state.isLoading,
             );
           },
@@ -75,6 +82,72 @@ class PostDetailScreen extends ConsumerWidget {
       extra: post,
     );
   }
+
+  Future<void> _confirmDeletion(
+    BuildContext context,
+    WidgetRef ref, {
+    required int postId,
+  }) async {
+    final shouldDelete = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Delete post'),
+            content: const Text(
+              'Are you sure you want to delete this post? This action cannot be undone.',
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Delete'),
+              ),
+            ],
+          ),
+        ) ??
+        false;
+
+    if (!shouldDelete) {
+      return;
+    }
+
+    final listNotifier = ref.read(postsListControllerProvider.notifier);
+    final detailProvider = postDetailControllerProvider(
+      PostDetailArgs(postId: postId, cachedPost: cachedPost),
+    );
+    final detailNotifier = ref.read(detailProvider.notifier);
+    final deleteUseCase = ref.read(deletePostUseCaseProvider);
+
+    listNotifier.removePost(postId);
+    detailNotifier.removeCurrentPost();
+    Navigator.of(context).pop();
+
+    final result = await deleteUseCase(DeletePostInput(id: postId));
+    result.when(
+      success: (_) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Post deleted.')),
+        );
+      },
+      failure: (failure) {
+        final snackBar = SnackBar(
+          content: Text(failure.message),
+          action: SnackBarAction(
+            label: 'Undo',
+            onPressed: () {
+              // In a real implementation we would reinsert the cached post.
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Undo not implemented.')),
+              );
+            },
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      },
+    );
+  }
 }
 
 class _PostDetailContent extends StatelessWidget {
@@ -83,6 +156,7 @@ class _PostDetailContent extends StatelessWidget {
     required this.isFromCache,
     required this.onEdit,
     required this.onRetry,
+    required this.onDelete,
     required this.isLoading,
   });
 
@@ -90,6 +164,7 @@ class _PostDetailContent extends StatelessWidget {
   final bool isFromCache;
   final VoidCallback onEdit;
   final VoidCallback onRetry;
+  final VoidCallback onDelete;
   final bool isLoading;
 
   @override
@@ -126,6 +201,11 @@ class _PostDetailContent extends StatelessWidget {
         PrimaryButton(
           label: 'Editar post',
           onPressed: onEdit,
+        ),
+        const SizedBox(height: 8),
+        SecondaryButton(
+          label: 'Eliminar post',
+          onPressed: onDelete,
         ),
       ],
     );

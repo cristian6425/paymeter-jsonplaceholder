@@ -17,4 +17,6 @@ abstract class IPostsDataSource {
     required int id,
     required Map<String, dynamic> payload,
   });
+
+  Future<void> deletePost(int id);
 }
